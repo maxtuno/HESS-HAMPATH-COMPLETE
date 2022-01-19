@@ -51,7 +51,6 @@ void inv(struct cpu *box) {
 }
 
 bool next_orbit(struct cpu *box) {
-    std::size_t key;
     for (box->l = 0; box->l < box->len * box->len && !box->sat; box->l++) {
         box->i = MIN(box->l / box->len, box->l % box->len);
         box->j = MAX(box->l / box->len, box->l % box->len);
@@ -73,42 +72,35 @@ void hess(struct cpu *box) {
     box->sat = false;
     while (next_orbit(box)) {
         box->glb = INT32_MAX;
-        for (;;) {
-            bool done = true;
-            for (box->l = 0; box->l < box->len * box->len; box->l++) {
-                box->i = MIN(box->l / box->len, box->l % box->len);
-                box->j = MAX(box->l / box->len, box->l % box->len);
-                // this trick only for HP
-                if (box->map[box->seq[!box->i ? box->len - 1 : box->i - 1]][box->seq[box->i]] + box->map[box->seq[!box->j ? box->len - 1 : box->j - 1]][box->seq[box->j]] <= 1) {
-                    inv(box);
-                    box->loc = 0;
-                    for (box->k = 0; box->k < box->len - 1; box->k++) {
-                        box->cmp++;
-                        box->loc += !box->map[box->seq[box->k]][box->seq[box->k + 1]];
-                        if (box->loc > box->glb) {
-                            break;
-                        }
-                    }
-                    if (box->loc < box->glb) {
-                        box->glb = box->loc;
-                        if (box->glb < cur) {
-                            cur = box->glb;
-                            box->sat = !box->glb;
-                            if (box->log) {
-                                box->log(box);
-                            }
-                            if (box->sat) {
-                                return;
-                            }
-                        }
-                        done = false;
-                    } else if (box->loc > box->glb) {
-                        inv(box);
+        for (box->l = 0; box->l < box->len * box->len; box->l++) {
+            box->i = MIN(box->l / box->len, box->l % box->len);
+            box->j = MAX(box->l / box->len, box->l % box->len);
+            // this trick only for HP
+            if (box->map[box->seq[!box->i ? box->len - 1 : box->i - 1]][box->seq[box->i]] + box->map[box->seq[!box->j ? box->len - 1 : box->j - 1]][box->seq[box->j]] <= 1) {
+                inv(box);
+                box->loc = 0;
+                for (box->k = 0; box->k < box->len - 1; box->k++) {
+                    box->cmp++;
+                    box->loc += !box->map[box->seq[box->k]][box->seq[box->k + 1]];
+                    if (box->loc > box->glb) {
+                        break;
                     }
                 }
-            }
-            if (done) {
-                break;
+                if (box->loc < box->glb) {
+                    box->glb = box->loc;
+                    if (box->glb < cur) {
+                        cur = box->glb;
+                        box->sat = !box->glb;
+                        if (box->log) {
+                            box->log(box);
+                        }
+                        if (box->sat) {
+                            return;
+                        }
+                    }
+                } else if (box->loc > box->glb) {
+                    inv(box);
+                }
             }
         }
     }
