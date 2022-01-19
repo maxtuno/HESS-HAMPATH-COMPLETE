@@ -16,6 +16,9 @@ https://colab.research.google.com/drive/1crfbZyVXahi54zzQp0ENN-bNzMzWCYAa
 FHCP Challenge Set (Instances for Hamiltonian Cycle but work for Hamiltonian Path)
 https://sites.flinders.edu.au/flinders-hamiltonian-cycle-project/fhcp-challenge-set/
 
+TSPLIB
+http://comopt.ifi.uni-heidelberg.de/software/TSPLIB95/hcp/
+
 Remarks: Is an open question if HESS is complete for SAT and ofcourse for HAMPATH. (Original HESS is polynomial black box approximator)
 
 # Build
