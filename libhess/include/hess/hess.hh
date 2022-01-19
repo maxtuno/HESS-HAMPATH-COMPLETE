@@ -31,7 +31,6 @@ struct cpu {
     I i;
     I j;
     I k;
-    I l;
     I m;
     I n;
     I len;
