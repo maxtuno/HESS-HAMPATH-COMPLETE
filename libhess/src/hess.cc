@@ -73,7 +73,7 @@ void hess(struct cpu *box) {
     while (next_orbit(box)) {
         box->glb = INT32_MAX;
         for (box->i = 0; box->i < box->len; box->i++) {
-            for (box->j = box->i; box->j < box->len; box->j++) {
+            for (box->j = 0; box->j < box->len; box->j++) {
                 // this trick only for HP
                 if (box->map[box->seq[!box->i ? box->len - 1 : box->i - 1]][box->seq[box->i]] + box->map[box->seq[!box->j ? box->len - 1 : box->j - 1]][box->seq[box->j]] <= 1) {
                     inv(box);
