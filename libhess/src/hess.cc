@@ -36,8 +36,8 @@ void hashing(struct cpu *box) {
 }
 
 void inv(struct cpu *box) {
-    box->m = box->i;
-    box->n = box->j;
+    box->m = MIN(box->i, box->j);
+    box->n = MAX(box->i, box->j);
     while (box->i < box->j) {
         box->cmp++;
         box->ram = box->seq[box->i];
